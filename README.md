@@ -1,6 +1,6 @@
 # kindling-ebpf-demo
 
-## 如何编译
+## 编译
 
 ### 编译环境安装
  ``` 
@@ -34,7 +34,7 @@ cd ..
 go build
  ``` 
 
-### 运行
+## 运行
  ``` 
 export SYSDIG_BPF_PROBE=./driver/bpf/probe.o
 ./kindling-ebpf-demo
