@@ -24,13 +24,15 @@ yum install -y golang
 
 #### 编译ebpf模块
  ``` 
+scl enable devtoolset-8 llvm-toolset-7.0 bash
 cd driver
 make
  ``` 
 #### 编译go
  ``` 
-cp libkindling.so /usr/lib64/
+ // 退回到代码根目录
 cd ..
+cp libkindling.so /usr/lib64/
 go build
  ``` 
 
