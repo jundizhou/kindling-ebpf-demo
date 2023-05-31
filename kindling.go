@@ -34,7 +34,7 @@ func Start() error {
 	subEvent()
 	// Wait for the C routine running
 	time.Sleep(2 * time.Second)
-
+	C.startProfile()
 	//获取内核事件
 	GetKindlingEvents()
 	return nil
@@ -46,22 +46,7 @@ func getCaptureStatistics() {
 
 func subEvent() error {
 	subscribeInfo := []SubEvent{
-		{Category: "net", Name: "syscall_exit-writev"},
-		{Category: "net", Name: "syscall_exit-readv"},
-		{Category: "net", Name: "syscall_exit-write"},
-		{Category: "net", Name: "syscall_exit-read"},
-		{Category: "net", Name: "syscall_exit-sendto"},
-		{Category: "net", Name: "syscall_exit-recvfrom"},
-		{Category: "net", Name: "syscall_exit-sendmsg"},
-		{Category: "net", Name: "syscall_exit-recvmsg"},
-		{Category: "net", Name: "grpc_uprobe"},
-		{Name: "kprobe-tcp_close"},
-		{Name: "kprobe-tcp_rcv_established"},
-		{Name: "kprobe-tcp_drop"},
-		{Name: "kprobe-tcp_retransmit_skb"},
-		{Name: "syscall_exit-connect"},
-		{Name: "kretprobe-tcp_connect"},
-		{Name: "kprobe-tcp_set_state"},
+		{Name: "tracepoint-cpu_analysis"},
 	}
 	if len(subscribeInfo) == 0 {
 		log.Println("No events are subscribed by cgo receiver. Please check your configuration.")
@@ -91,10 +76,10 @@ func GetKindlingEvents() {
 	for {
 		res := int(C.getEventsByInterval(C.int(100000000), (unsafe.Pointer)(&npKindlingEvent[0]), (unsafe.Pointer)(&count)))
 		if res == 0 {
-			for i := 0; i < count; i++ {
-				event := convertEvent((*CKindlingEventForGo)(&npKindlingEvent[i]))
-				log.Printf("event :", event)
-			}
+			//for i := 0; i < count; i++ {
+			//	event := convertEvent((*CKindlingEventForGo)(&npKindlingEvent[i]))
+			//	log.Printf("event :", event)
+			//}
 			//r.telemetry.Logger.Info("total_number_of_kindling_events: ", zap.Int("num", count))
 		}
 		count = 0
